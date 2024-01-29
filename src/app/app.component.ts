@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {HeaderComponent} from "./header/header.component";
 import {StartPageComponent} from "./start-page/start-page.component";
 import {BookingPageComponent} from "./booking-page/booking-page.component";
@@ -14,5 +14,5 @@ import {FooterComponent} from "./footer/footer.component";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'CustomerAccess';
+  title: string = 'CustomerAccess';
 }

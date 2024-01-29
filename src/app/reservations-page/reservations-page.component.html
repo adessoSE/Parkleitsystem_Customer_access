@@ -1,1 +1,11 @@
-<p>reservations-page works!</p>
+<div *ngIf="bookings.length === 0">
+  Noch keine Buchungen!
+</div>
+<div *ngIf="bookings.length > 0">
+  <ul>
+    <li *ngFor="let booking of bookings">
+      <span>{{booking.id}}</span>
+      <span>{{booking.date}}</span>
+    </li>
+  </ul>
+</div>
