@@ -7,5 +7,4 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
-  items = ['1','2','3']
 }
