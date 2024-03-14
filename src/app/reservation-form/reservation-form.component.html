@@ -1,7 +1,18 @@
-<form>
-  <label>Datum</label>
-  <input type="date">
-  <label>Parkplatz Nr.</label>
-  <input type="number">
-  <button>Reservieren</button>
+<form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+  <div>
+  <label for="reservationDate">Datum :</label>
+  <input id="reservationDate" type="date" formControlName="reservationDate">
+    @if (reservationForm.get('reservationDate')?.invalid && reservationForm.get('reservationDate')?.touched){
+      <div><h6>Bitte ein gültiges Datum auswählen!</h6></div>
+    }
+  </div>
+  <div>
+  <label for="reservationSpot">Parkplatz Nr.:</label>
+  <input id="reservationSpot" type="number" formControlName="reservationSpot">
+    @if (reservationForm.get('reservationSpot')?.invalid && reservationForm.get('reservationSpot')?.touched){
+      <div><h6>Bitte einen Parkplatz auswählen!</h6></div>
+    }
+  </div>
+  <button type="submit" [disabled]="reservationForm.invalid">Reservieren</button>
 </form>
+
