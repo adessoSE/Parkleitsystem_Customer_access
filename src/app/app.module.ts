@@ -7,6 +7,7 @@ import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {ReservationModule} from "./reservation/reservation.module";
 
+
 @NgModule({
   declarations: [
     AppComponent,
