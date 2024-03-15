@@ -1,7 +1,7 @@
 <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
   <div>
   <label for="reservationDate">Datum :</label>
-  <input id="reservationDate" type="date" formControlName="reservationDate">
+  <input id="reservationDate" type="date" formControlName="reservationDate" min="{{validDate | date : 'yyyy-MM-dd'}}">
     @if (reservationForm.get('reservationDate')?.invalid && reservationForm.get('reservationDate')?.touched){
       <div><h6>Bitte ein gültiges Datum auswählen!</h6></div>
     }

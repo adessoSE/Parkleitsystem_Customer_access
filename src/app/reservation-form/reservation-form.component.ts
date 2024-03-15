@@ -9,7 +9,8 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, 
 })
 export class ReservationFormComponent implements OnInit {
   reservationForm: FormGroup = new FormGroup({});
-  validDate = new Date().toDateString();
+  currentDate = new Date();
+  validDate = new Date(this.currentDate.setDate(this.currentDate.getDate()+1)).toDateString();
 
   constructor(private formbuilder: FormBuilder) {
 
@@ -24,7 +25,6 @@ export class ReservationFormComponent implements OnInit {
 
   public dateValidation(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      console.log(Date.parse(control.value));
       let forbidden: boolean;
       if (Date.parse(this.validDate) >= Date.parse(control.value)) {
         forbidden = true;
