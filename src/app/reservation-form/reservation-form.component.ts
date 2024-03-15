@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {ParkingSpot} from "../shared/parking-spot";
+import {parkingSpots} from "../shared/parking-spots.model";
 
 
 @Component({
@@ -10,7 +12,8 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, 
 export class ReservationFormComponent implements OnInit {
   reservationForm: FormGroup = new FormGroup({});
   currentDate = new Date();
-  validDate = new Date(this.currentDate.setDate(this.currentDate.getDate()+1)).toDateString();
+  validDate = new Date(this.currentDate.setDate(this.currentDate.getDate() + 1)).toDateString(); // sets the valid date to 'tomorrow'
+  parkingSpots: ParkingSpot[] = parkingSpots;
 
   constructor(private formbuilder: FormBuilder) {
 
@@ -26,7 +29,7 @@ export class ReservationFormComponent implements OnInit {
   public dateValidation(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       let forbidden: boolean;
-      if (Date.parse(this.validDate) >= Date.parse(control.value)) {
+      if (Date.parse(this.validDate) >= Date.parse(control.value)) { // is the input smaller or equal to the valid date?
         forbidden = true;
       } else {
         forbidden = false;
@@ -37,5 +40,6 @@ export class ReservationFormComponent implements OnInit {
 
   onSubmit() {
     // submit to DB
+    console.log('this has been submitted');
   }
 }
