@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
-import {ReservationModule} from "./reservation/reservation.module";
+import {ReservationModule} from './reservation/reservation.module';
 
 
 @NgModule({

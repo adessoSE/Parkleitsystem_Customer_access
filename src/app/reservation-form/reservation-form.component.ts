@@ -11,12 +11,13 @@ import {parkingSpots} from "../shared/parking-spots.model";
 })
 export class ReservationFormComponent implements OnInit {
   reservationForm: FormGroup = new FormGroup({});
-  currentDate = new Date();
-  validDate = new Date(this.currentDate.setDate(this.currentDate.getDate() + 1)).toDateString(); // sets the valid date to 'tomorrow'
+  currentDate: Date;
+  validDate: string;
   parkingSpots: ParkingSpot[] = parkingSpots;
 
   constructor(private formbuilder: FormBuilder) {
-
+    this.currentDate = new Date();
+    this.validDate = new Date(this.currentDate.setDate(this.currentDate.getDate() + 1)).toDateString(); // sets the valid date to 'tomorrow'
   }
 
   ngOnInit() {
@@ -42,4 +43,6 @@ export class ReservationFormComponent implements OnInit {
     // submit to DB
     console.log('this has been submitted');
   }
+
+  protected readonly alert = alert;
 }
