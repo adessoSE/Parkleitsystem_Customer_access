@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
-import {Reservations} from '../shared/reservations.model';
-import {Reservation} from '../shared/reservation';
-import {Router} from "@angular/router";
+import { Component } from '@angular/core';
+import {Reservation} from "../shared/reservation";
+import {StorageService} from "../shared/storage.service";
 
 @Component({
   selector: 'app-reservation-list',
@@ -9,17 +8,9 @@ import {Router} from "@angular/router";
   styleUrl: './reservation-list.component.css'
 })
 export class ReservationListComponent {
-  reservationMocks: Reservation[] = Reservations;
+  reservations: Reservation[] = []
 
-  constructor(private router: Router) {
-  }
-
-  onEdit(id: string){
-    //navigate to /new:id
-    this.router.navigate(['/new/'+id]);
-  }
-
-  onDelete(id: string){
-   //delete
+  constructor(private storage: StorageService) {
+    this.reservations = this.storage.getReservations();
   }
 }

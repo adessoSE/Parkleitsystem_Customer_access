@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 
 import {ParkingSpot} from '../shared/parking-spot';
-import {parkingSpots} from '../shared/parking-spots.model';
+import {StorageService} from '../shared/storage.service';
 
 
 @Component({
@@ -22,10 +22,11 @@ export class ReservationFormComponent implements OnInit {
   reservationForm: FormGroup = new FormGroup({});
   currentDate: Date;
   validDate: string;
-  parkingSpots: ParkingSpot[] = parkingSpots;
+  parkingSpots: ParkingSpot[] = [];
   // selectedSpot: number | undefined; //obsolete?
 
-  constructor(private formbuilder: FormBuilder, private router: Router) {
+  constructor(private formbuilder: FormBuilder, private router: Router, private storage: StorageService) {
+    this.parkingSpots = this.storage.getSpots();
     this.currentDate = new Date();
     this.validDate = new Date(this.currentDate.setDate(this.currentDate.getDate() + 1)).toDateString(); // sets the valid date to 'tomorrow'
   }
@@ -56,6 +57,10 @@ export class ReservationFormComponent implements OnInit {
 
   onSubmit() {
     // submit to DB
+    if(this.reservationForm.valid){
+      let reservation = this.reservationForm.value;
+      this.storage.addReservation(reservation);
+    }
     this.router.navigate(['/list']);//returns promise, needs onRejected functionality
   }
 
