@@ -11,7 +11,6 @@ import {
 
 import {ParkingSpot} from '../shared/parking-spot';
 import {parkingSpots} from '../shared/parking-spots.model';
-import * as path from "path";
 
 
 @Component({
