@@ -1,28 +1,65 @@
-<form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
-  <div>
-  <label for="reservationDate">Datum :</label>
-  <input id="reservationDate" type="date" formControlName="reservationDate" min="{{validDate | date : 'yyyy-MM-dd'}}">
-    @if (reservationForm.get('reservationDate')?.invalid && reservationForm.get('reservationDate')?.touched){
-      <div><h6>Bitte ein gültiges Datum auswählen!</h6></div>
-    }
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 card justify-content-center">
+      <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="reservationDate" class="form-label">Datum:</label>
+          <input id="reservationDate" class="form-control" type="date" formControlName="reservationDate"
+                 min="{{validDate | date : 'yyyy-MM-dd'}}">
+          @if (reservationForm.get('reservationDate')?.invalid && reservationForm.get('reservationDate')?.touched) {
+            <div><h6>Bitte ein gültiges Datum auswählen!</h6></div>
+          }
+        </div>
+        <div>
+          <label for="reservarionSpot" class="form-label">Parkplatz Nr.:</label>
+          <select id="reservarionSpot" class="form-select" name="reservationSpot" formControlName="reservationSpot">
+            <option value="">Bitte wählen</option>
+            @for (spot of parkingSpots; track spot.id) {
+              <option value="{{spot.id}}" [disabled]="!spot.status">{{ spot.id }}</option>
+            }
+          </select>
+          @if (reservationForm.get('reservationSpot')?.invalid && reservationForm.get('reservationSpot')?.touched) {
+            <div><h6>Bitte einen Parkplatz auswählen!</h6></div>
+          }
+        </div>
+        <button type="submit" class="btn btn-primary my-2" [disabled]="reservationForm.invalid">Reservieren</button>
+      </form>
+    </div>
+    <div class="col-md-8 card align-items-center">
+      <div class="row align-items-center my-2">
+        <label for="parkingDeck" class="form-label">Parkdeck: </label>
+        <select id="parkingDeck" class="form-select">
+          <option value="1">Parkdeck 1</option>
+        </select>
+      </div>
+      <!--      @if(parkdeck != null){-->
+      <svg class="parkingArea my-2" height="450" width="700">
+        @for (spot of parkingSpots; track spot.id) {
+          <g>
+            <rect class="parkingSpot" id="rect{{spot.id}}" [attr.x]="spot.xCoord" [attr.y]="spot.yCoord" height="150" width="100" (click)="onSpotPicked(spot.id)"/>
+            <text [attr.x]="spot.xCoord" [attr.y]="spot.yCoord">{{ spot.id }}</text>
+          </g>
+        }
+      </svg>
+      <!--      }-->
+    </div>
   </div>
-  <div>
-    <label for="reservarionSpot">Parkplatz Nr.:</label>
-    <select id="reservarionSpot" name="reservationSpot" formControlName="reservationSpot">
-      <option value="">Bitte wählen</option>
-      @for (spot of parkingSpots; track spot.id){
-        <option value="{{spot.id}}" [disabled]="!spot.status">{{spot.id}}</option>
-      }
-    </select>
-    @if (reservationForm.get('reservationSpot')?.invalid && reservationForm.get('reservationSpot')?.touched){
-      <div><h6>Bitte einen Parkplatz auswählen!</h6></div>
-    }
+</div>
+
+<!--Modal-->
+<div class="modal" id="dateModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!--      <div class="modal-header">-->
+      <!--        <h2 class="modal-title">Bitte ein Datum auswählen :</h2>-->
+      <!--      </div>-->
+      <div class="modal-body">
+        <form (ngSubmit)="onModalDate()">
+          <label for="modalDate">Bitte ein Datum auswählen:</label>
+          <input id="modalDate" type="date"/>
+          <button type="submit">Auswählen</button>
+        </form>
+      </div>
+    </div>
   </div>
-  <button type="submit" [disabled]="reservationForm.invalid">Reservieren</button>
-</form>
-<!--<svg width="400" height="1500">-->
-<!--  @for (spot of parkingSpots; track spot.id){-->
-<!--    <rect x="{{spot.xCoord}}" y="{{spot.yCoord}}" height="150" width="150" style="fill: red; opacity: 0.5"/>-->
-<!--  }-->
-<!--</svg>-->
-<app-svg></app-svg>
+</div>

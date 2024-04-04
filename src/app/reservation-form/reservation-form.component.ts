@@ -1,7 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {ParkingSpot} from "../shared/parking-spot";
-import {parkingSpots} from "../shared/parking-spots.model";
+import {Router} from '@angular/router';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
+
+import {ParkingSpot} from '../shared/parking-spot';
+import {parkingSpots} from '../shared/parking-spots.model';
+import * as path from "path";
 
 
 @Component({
@@ -14,8 +24,9 @@ export class ReservationFormComponent implements OnInit {
   currentDate: Date;
   validDate: string;
   parkingSpots: ParkingSpot[] = parkingSpots;
+  // selectedSpot: number | undefined; //obsolete?
 
-  constructor(private formbuilder: FormBuilder) {
+  constructor(private formbuilder: FormBuilder, private router: Router) {
     this.currentDate = new Date();
     this.validDate = new Date(this.currentDate.setDate(this.currentDate.getDate() + 1)).toDateString(); // sets the valid date to 'tomorrow'
   }
@@ -24,6 +35,11 @@ export class ReservationFormComponent implements OnInit {
     this.reservationForm = this.formbuilder.group({
       reservationDate: ['', [Validators.required, this.dateValidation()]],
       reservationSpot: ['', Validators.required]
+    })
+    this.reservationForm.get('reservationSpot')?.valueChanges.subscribe(change => {
+      if (change && typeof (change) === "string") {
+        this.onSpotPicked(Number(change));
+      }
     })
   }
 
@@ -41,8 +57,20 @@ export class ReservationFormComponent implements OnInit {
 
   onSubmit() {
     // submit to DB
-    console.log('this has been submitted');
+    this.router.navigate(['/list']);//returns promise, needs onRejected functionality
   }
 
-  protected readonly alert = alert;
+  onSpotPicked(id: number) {
+    // this.selectedSpot = id; //obsolete?
+    const oldRect = document.querySelector('.selectedSpot');
+    oldRect?.classList.replace('selectedSpot', 'parkingSpot');
+    const thisRect = document.getElementById(`rect` + id);
+    thisRect?.classList.replace('parkingSpot', 'selectedSpot');
+    this.reservationForm.get('reservationSpot')?.patchValue(id);
+  }
+
+  onModalDate() {
+    //Date form Modal to Form
+    console.log('The Date has been picked');
+  }
 }
