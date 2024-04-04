@@ -1,1 +1,25 @@
-<p>reservation-list works!</p>
+<div>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Parkplatz</th>
+      <th scope="col">Datum</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (entry of reservationMocks; track entry.id){
+        <tr>
+          <th scope="row">{{$index+1}}</th>
+          <td>{{entry.pid}}</td>
+          <td>{{entry.date}}</td>
+          <td>
+            <button class="btn btn-primary" (click)="onEdit(entry.id)">edit</button>
+            <button class="btn btn-danger" (click)="onDelete(entry.id)">delete</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -8,6 +8,7 @@ import {ReservationListComponent} from './reservation-list/reservation-list.comp
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'new', component: ReservationFormComponent},
+  {path: 'new/:id', component: ReservationFormComponent},
   {path: 'list', component: ReservationListComponent}
 ];
 
