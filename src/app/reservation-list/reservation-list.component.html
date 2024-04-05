@@ -12,8 +12,8 @@
         <td>{{ entry.reservationDate | date: 'dd-MM-YYY'}}</td>
         <td>{{ entry.reservationSpot }}</td>
         <td>
-          <button class="btn btn-primary">edit</button>
-          <button class="btn btn-danger">delete</button>
+          <button class="btn btn-primary" (click)="onEdit(entry.id)">edit</button>
+          <button class="btn btn-danger" (click)="onDelete(entry.id)">delete</button>
         </td>
       </tr>
     }

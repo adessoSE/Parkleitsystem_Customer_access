@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {
   AbstractControl,
   FormBuilder,
@@ -23,12 +23,15 @@ export class ReservationFormComponent implements OnInit {
   currentDate: Date;
   validDate: string;
   parkingSpots: ParkingSpot[] = [];
+  editMode: boolean = false;
+
   // selectedSpot: number | undefined; //obsolete?
 
-  constructor(private formbuilder: FormBuilder, private router: Router, private storage: StorageService) {
+  constructor(private formbuilder: FormBuilder, private router: Router, private storage: StorageService, private aRoute: ActivatedRoute) {
     this.parkingSpots = this.storage.getSpots();
     this.currentDate = new Date();
     this.validDate = new Date(this.currentDate.setDate(this.currentDate.getDate() + 1)).toDateString(); // sets the valid date to 'tomorrow'
+    this.editMode = this.aRoute.snapshot.paramMap.get('id') ? true : false;
   }
 
   ngOnInit() {
@@ -36,6 +39,15 @@ export class ReservationFormComponent implements OnInit {
       reservationDate: ['', [Validators.required, this.dateValidation()]],
       reservationSpot: ['', Validators.required]
     })
+    if (this.editMode) {
+      let id = this.aRoute.snapshot.paramMap.get('id')!;
+      let reservation = this.storage.getReservationById(id);
+      if (reservation) {
+        this.reservationForm.patchValue(reservation);
+      } else {
+        this.router.navigate(['/new']);
+      }
+    }
     this.reservationForm.get('reservationSpot')?.valueChanges.subscribe(change => {
       if (change && typeof (change) === "string") {
         this.onSpotPicked(Number(change));
@@ -57,7 +69,7 @@ export class ReservationFormComponent implements OnInit {
 
   onSubmit() {
     // submit to DB
-    if(this.reservationForm.valid){
+    if (this.reservationForm.valid) {
       let reservation = this.reservationForm.value;
       this.storage.addReservation(reservation);
     }
@@ -75,6 +87,5 @@ export class ReservationFormComponent implements OnInit {
 
   onModalDate() {
     //Date form Modal to Form
-    console.log('The Date has been picked');
   }
 }

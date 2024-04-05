@@ -11,21 +11,37 @@ export class StorageService {
   private reservationMocks: Reservation[] = [];
 
   constructor() {
-    let savedReservations: string | null = localStorage.getItem("reservations");
-    this.reservationMocks = savedReservations? JSON.parse(savedReservations) : [];
+    this.updateReservations();
   }
 
-  getSpots(): ParkingSpot[]{
+  updateReservations(){
+    let savedReservations: string | null = localStorage.getItem("reservations");
+    this.reservationMocks = savedReservations ? JSON.parse(savedReservations) : [];
+  }
+
+  getSpots(): ParkingSpot[] {
     return this.parkingSpots;
   }
 
-  getReservations(): Reservation[]{
+  getReservations(): Reservation[] {
     return this.reservationMocks;
   }
 
-  addReservation(reservation: Reservation){
+  addReservation(reservation: Reservation) {
     reservation.id = Date.now().toString();
     this.reservationMocks.push(reservation);
+    localStorage.setItem("reservations", JSON.stringify(this.reservationMocks));
+  }
+
+  getReservationById(id: string): Reservation | undefined {
+    let foundReservation = this.reservationMocks.find(reservation => reservation.id === id);
+
+    return foundReservation;
+  }
+
+  deleteReservationById(id: string){
+    let index = this.reservationMocks.findIndex(reservation => reservation.id === id);
+    this.reservationMocks.splice(index, 1);
     localStorage.setItem("reservations", JSON.stringify(this.reservationMocks));
   }
 }
